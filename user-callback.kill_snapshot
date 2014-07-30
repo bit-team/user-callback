@@ -16,23 +16,30 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-#Script should return 0 if everything is alright. Returncode !0 will cancle
-#the running snapshot (BIT version >1.1.0).
+# stop creating a new snapshot if conditions are not met. For example if the
+# source drive isn't mounted. With version >= 1.1.0 you don't need to kill
+# processes any more. Just return a non zero returncode.
 
 profile_id="$1"
 profile_name="$2"
-reason="$3"
-errorcode="$4"
+pid=$$
 
-case $reason in
+function ppid {
+    cat /proc/$1/status | grep "PPid:" | cut -f2
+}
+
+case $3 in
     1) #Backup process begins
+        if [ true ]; then ###INSERT YOUR CONDITIONS HERE
+            kill $(ppid $(ppid $pid))
+        fi
         ;;
     2) #Backup process ends
         ;;
     3) #A new snapshot was taken
         ;;
     4) #There was an error
-        case $errorcode in
+        case $4 in
             1) #ERROR The application is not configured
               ;;
             2) #ERROR A 'take snapshot' process is already running
