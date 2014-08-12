@@ -24,13 +24,14 @@ profile_id="$1"
 profile_name="$2"
 reason="$3"
 errorcode="$4"
-DST='$HOME/.apt-backup'
+DST="$HOME/.apt-backup"
 
 case $reason in
     1) #on process begin
        mkdir -p $DST
-       apt-mark showauto > $DST/pgk_auto.lst
-       apt-mark showmanual > $DST/pgk_manual.lst
+       dpkg --get-selections > $DST/packages.list
+       apt-mark showauto > $DST/pgk_auto.list
+       apt-mark showmanual > $DST/pgk_manual.list
        rm -f $DST/sources.list.d/*
        cp -aR /etc/apt/sources.list* $DST/
        apt-key exportall > $DST/repo.keys
