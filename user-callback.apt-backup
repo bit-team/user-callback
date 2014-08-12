@@ -16,17 +16,22 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 # backup selection of apt-get
-# This script must run as root.
 # Take a look at 
 # https://answers.launchpad.net/backintime/+faq/2455
 # https://answers.launchpad.net/backintime/+faq/2456
 
-DST="/root/.apt-backup"
+profile_id="$1"
+profile_name="$2"
+reason="$3"
+errorcode="$4"
+DST='$HOME/.apt-backup'
 
-case $3 in
+case $reason in
     1) #on process begin
        mkdir -p $DST
-       dpkg --get-selections > $DST/package.list
+       apt-mark showauto > $DST/pgk_auto.lst
+       apt-mark showmanual > $DST/pgk_manual.lst
+       rm -f $DST/sources.list.d/*
        cp -aR /etc/apt/sources.list* $DST/
        apt-key exportall > $DST/repo.keys
        ;;
