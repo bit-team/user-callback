@@ -29,7 +29,7 @@ DST="$HOME/.apt-backup"
 case $reason in
     1) #on process begin
        mkdir -p $DST
-       dpkg --get-selections > $DST/packages.list
+       dpkg --get-selections > $DST/package.list
        apt-mark showauto > $DST/pgk_auto.list
        apt-mark showmanual > $DST/pgk_manual.list
        rm -f $DST/sources.list.d/*
