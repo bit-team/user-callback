@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Example script for user-callback
+# user-callback is a script called by backintime (http://backintime.le-web.org) before, during and after a backup.
+
+# Copyright (c) 2014 Fabrizio Marana
+
+# This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. See the GNU General Public License for more details.
+# You DID NOT receive a copy of the GNU General Public License along with this program as the license is bigger then this program.
+# Therefore, see http://www.gnu.org/licenses/ for more details.
+
+# Note:
+#   To allow the notify-send "expire-time" parameter to work,
+#     follow http://www.webupd8.org/2014/04/configurable-notification-bubbles-for.html
+#   To allow mail to be sent, the "mailutils" package must be installed and configured:
+#     sudo apt-get install mailutils
+#     https://www.google.com/search?q=linux+configure+mailutils
+
+# Version 0.2 DD 2014/11/08 Change as much fixed text to variables to allow others to modify more easily
+#                           Polish code to make it more readable
+# TO DO:  Use rsync instead of cpio
+
+
+### Init ###
+declare szBackInTimeEMailAddress="YourEMail@YourServer.COM"   #if empty, no mail will be sent on error
+declare szBackupVolume="/media/fab-512M/$USER-FileBackup"     #if empty, no finalising will be performed
+
+# BackInTime passes arguments on the command line.  Name them for clarity.
+declare iBackInTimeProfileID="$1"
+declare szBackInTimeProfileName="$2"
+declare iBackInTimeStatus="$3"
+declare iBackInTimeSnapshotID="$4"
+declare szBackInTimeSnapshotName="$5"
+
+### main ###
+case $iBackInTimeStatus in
+  1)  ## Backup Starting ##
+      # Here you should put commands that you need JUST before the backup begins, E.g.:
+        # mount the backup drive
+        # connect to the right server
+        # stop daemons/services, ... 
+      notify-send --urgency=LOW --icon=face-plain "BackInTime" \
+        "Starting backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}'..."
+  ;;
+  2)  ## Backup Finished ##
+      notify-send --urgency=NORMAL --icon=face-laugh "BackInTime" \
+        "Finished backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}' completely!" 
+      # Here you should put the commands that you need after the backup ends, E.g.: (Probably the reverse of the 1) section)
+        # unmount the correct drive
+        # connecting to the right server
+        # allow the user to try again later, ... 
+  ;;
+  3)  ## Backup Finishing ##
+      # Here you should put the commands that you need to do just before the backup finishes:
+      #   Copying extra files,
+      #   writing to logs, ...
+      notify-send --urgency=NORMAL --icon=face-cool --expire-time=4000 "BackInTime" \
+        "Finishing backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}'\nfor snapshot '${iBackInTimeSnapshotID}:${szBackInTimeSnapshotName}'..." 
+      # As backintime currently does not allow to include a directory AND at the same time exclude certain file types,
+      # copy all the subtitles (srt,ssa) and posters (jp*) of the Videos directory to the snapshot as well
+      if [ -n "$szBackupVolume" ]; then
+        chmod --recursive u+w $szBackupVolume/backintime/$HOSTNAME/$USER/*
+        mkdir --parents $szBackupVolume/backintime/$HOSTNAME/$USER/$iBackInTimeProfileID/last_snapshot/backup$HOME/Videos/
+        find $HOME/Videos/ -name '*.srt' -type f -print0 -o -name "*.ssa" -type f -print0 -o -name "*.jp*" -type f -print0 | \
+          cpio --pass-through --preserve-modification-time --reset-access-time --make-directories -0 \
+          $szBackupVolume/backintime/$HOSTNAME/$USER/$iBackInTimeProfileID/last_snapshot/backup
+        sync
+      fi
+  ;;
+  4) # An error occurred: $iBackInTimeSnapshotID contains the error number
+    declare -r iBackInTimeError=$iBackInTimeSnapshotID
+    declare szBackInTimeErrorMessage="BackInTime Error: "
+    declare szBackInTimeExtendedErrorMessage=""
+    # We're notifying the user on-screen and emailing the log file 
+    # using the mailutils package regardless of the kind of error
+    case $iBackInTimeError in
+      1)  ## Application not configured ##
+          szBackInTimeErrorMessage=$szBackInTimeErrorMessage" Application not configured!" 
+          ;;
+      2)  ## Application already Running ##
+          szBackInTimeErrorMessage=$szBackInTimeErrorMessage" BackInTime is already running!"
+          szBackInTimeExtendedErrorMessage="\n\nPlease ensure you don't have an automatic backup and a manual backup both running at once." 
+          ;;
+      3)  ## No snapshot Directory ##
+          szBackInTimeErrorMessage=$szBackInTimeErrorMessage" BackInTime can’t find the snapshots directory!"
+          szBackInTimeExtendedErrorMessage="\n\n(Is it on a removable drive which was detached/unmounted in error?)" 
+          ;;
+      4)  ## Snapshot already exixsts ##
+          szBackInTimeErrorMessage=$szBackInTimeErrorMessage" A snapshot for 'now' already exists!" 
+          ;;
+    esac # Error
+    notify-send --urgency=CRITICAL --icon=face-angry "BackInTime Error" "$szBackInTimeErrorMessage$szBackInTimeExtendedErrorMessage"
+    # only send mail if the e-mail address is not empty
+    if [ -n "$szBackInTimeEMailAddress" ]; then
+      mail --subject="$szBackInTimeErrorMessage$(date +%Y-%m-%d)" --to "$szBackInTimeEMailAddress"<~/.local/share/backintime/takesnapshot_.log
+    fi
+  ;;
+esac #Status
