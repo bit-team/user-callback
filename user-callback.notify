@@ -94,7 +94,9 @@ case $iBackInTimeStatus in
     esac # Error
     notify-send --urgency=CRITICAL --icon=face-angry "BackInTime Error" "$szBackInTimeErrorMessage$szBackInTimeExtendedErrorMessage"
     # only send mail if the e-mail address is not empty
-    if [ -n "$szBackInTimeEMailAddress" ]; then
+    if [ -n "$szBackInTimeEMailAddress" ] &&  \
+       [ "x$(which mail)" != "x" ] && \
+       [ -x $(which mail) ] then
       mail --subject="$szBackInTimeErrorMessage$(date +%Y-%m-%d)" --to "$szBackInTimeEMailAddress"<~/.local/share/backintime/takesnapshot_.log
     fi
   ;;
