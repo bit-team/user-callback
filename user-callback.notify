@@ -1,13 +1,23 @@
 #!/bin/bash
 
 # Example script for user-callback
-# user-callback is a script called by backintime (http://backintime.le-web.org) before, during and after a backup.
+# user-callback is a script called by backintime (http://backintime.le-web.org)
+# before, during and after a backup.
 
 # Copyright (c) 2014 Fabrizio Marana
 
-# This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. See the GNU General Public License for more details.
-# You DID NOT receive a copy of the GNU General Public License along with this program as the license is bigger then this program.
+# This program is free software: you can redistribute it and/or modify it under 
+# the terms of the GNU General Public License as published by the Free Software 
+# Foundation, either version 3 of the License, or (at your option) any later version.
+# This program is distributed in the hope that it will be useful, but WITHOUT 
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+# See the GNU General Public License for more details.
+# You DID NOT receive a copy of the GNU General Public License along with this 
+# program as the license is bigger then this program.
 # Therefore, see http://www.gnu.org/licenses/ for more details.
 
 # Note:
@@ -17,14 +27,16 @@
 #     sudo apt-get install mailutils
 #     https://www.google.com/search?q=linux+configure+mailutils
 
-# Version 0.2 DD 2014/11/08 Change as much fixed text to variables to allow others to modify more easily
+# Version 0.2 DD 2014/11/08 Change as much fixed text to variables to allow 
+#                           others to modify more easily
 #                           Polish code to make it more readable
 # TO DO:  Use rsync instead of cpio
 
 
 ### Init ###
-declare szBackInTimeEMailAddress="YourEMail@YourServer.COM"   #if empty, no mail will be sent on error
-declare szBackupVolume="/media/fab-512M/$USER-FileBackup"     #if empty, no finalising will be performed
+# You need to configure this before using this script
+declare szBackInTimeEMailAddress=""   #if empty, no mail will be sent on error
+declare szBackupVolume=""             #if empty, no finalising will be performed
 
 # BackInTime passes arguments on the command line.  Name them for clarity.
 declare iBackInTimeProfileID="$1"
