@@ -16,9 +16,9 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 # backup selection of apt-get
-# Take a look at 
-# https://answers.launchpad.net/backintime/+faq/2455
-# https://answers.launchpad.net/backintime/+faq/2456
+# Take a look at
+# https://github.com/bit-team/backintime/wiki/FAQ#how-to-backup-debian-ubuntu-package-selection
+# https://github.com/bit-team/backintime/wiki/FAQ#how-to-restore-debian-ubuntu-package-selection
 
 profile_id="$1"
 profile_name="$2"
