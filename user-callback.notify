@@ -64,21 +64,11 @@ case $iBackInTimeStatus in
         # allow the user to try again later, ... 
   ;;
   3)  ## Backup Finishing ##
+      notify-send --urgency=NORMAL --icon=face-cool --expire-time=4000 "BackInTime" \
+        "Finishing backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}'\nfor snapshot '${iBackInTimeSnapshotID}:${szBackInTimeSnapshotName}'..." 
       # Here you should put the commands that you need to do just before the backup finishes:
       #   Copying extra files,
       #   writing to logs, ...
-      notify-send --urgency=NORMAL --icon=face-cool --expire-time=4000 "BackInTime" \
-        "Finishing backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}'\nfor snapshot '${iBackInTimeSnapshotID}:${szBackInTimeSnapshotName}'..." 
-      # As backintime currently does not allow to include a directory AND at the same time exclude certain file types,
-      # copy all the subtitles (srt,ssa) and posters (jp*) of the Videos directory to the snapshot as well
-      if [ -n "$szBackupVolume" ]; then
-        chmod --recursive u+w $szBackupVolume/backintime/$HOSTNAME/$USER/*
-        mkdir --parents $szBackupVolume/backintime/$HOSTNAME/$USER/$iBackInTimeProfileID/last_snapshot/backup$HOME/Videos/
-        find $HOME/Videos/ -name '*.srt' -type f -print0 -o -name "*.ssa" -type f -print0 -o -name "*.jp*" -type f -print0 | \
-          cpio --pass-through --preserve-modification-time --reset-access-time --make-directories -0 \
-          $szBackupVolume/backintime/$HOSTNAME/$USER/$iBackInTimeProfileID/last_snapshot/backup
-        sync
-      fi
   ;;
   4) # An error occurred: $iBackInTimeSnapshotID contains the error number
     declare -r iBackInTimeError=$iBackInTimeSnapshotID
