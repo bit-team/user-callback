@@ -49,8 +49,6 @@ declare szBackInTimeSnapshotName="$5"
 case $iBackInTimeStatus in
   1)  ## Backup Starting ##
       # Here you should put commands that you need JUST before the backup begins, E.g.:
-        # mount the backup drive
-        # connect to the right server
         # stop daemons/services, ... 
       notify-send --urgency=LOW --icon=face-plain "BackInTime" \
         "Starting backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}'..."
@@ -58,9 +56,8 @@ case $iBackInTimeStatus in
   2)  ## Backup Finished ##
       notify-send --urgency=NORMAL --icon=face-laugh "BackInTime" \
         "Finished backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}' completely!" 
-      # Here you should put the commands that you need after the backup ends, E.g.: (Probably the reverse of the 1) section)
-        # unmount the correct drive
-        # connecting to the right server
+      # Here you should put the commands that you need after the backup ends, E.g.:
+      # (Probably the reverse of the 1) section)
         # allow the user to try again later, ... 
   ;;
   3)  ## Backup Finishing ##
@@ -99,5 +96,18 @@ case $iBackInTimeStatus in
        [ -x $(which mail) ] then
       mail --subject="$szBackInTimeErrorMessage$(date +%Y-%m-%d)" --to "$szBackInTimeEMailAddress"<~/.local/share/backintime/takesnapshot_.log
     fi
+  ;;
+  5)  ## backintime-qt4 (GUI) started ##
+      #  Here you can put things that need to be done when launching the GUI
+  ;;
+  6)  ## backintime-qt4 (GUI) closed ##
+      #  Here you can put things that need to be done when closing the GUI
+  ;;
+  7) ## Mount drives ##
+     #  Here you should place custom mount commands which will be called everytime
+     #  the GUI or command line tool is started or the profile is switched in GUI
+  ;;
+  8) ## Unmount the drives ##
+     #  Here you should place unmount scripts for the drive you mounted in 7)
   ;;
 esac #Status
