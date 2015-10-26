@@ -1,5 +1,5 @@
 #!/bin/bash
-#    Copyright (c) 2012-2014 Germar Reitze
+#    Copyright (c) 2012-2015 Germar Reitze
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 profile_id="$1"
 profile_name="$2"
 reason="$3"
-errorcode="$4"
 
 case $reason in
     1) #Backup process begins
@@ -30,8 +29,11 @@ case $reason in
     2) #Backup process ends
         ;;
     3) #A new snapshot was taken
+        snapshot_id="$4"
+        snapshot_name="$5"
         ;;
     4) #There was an error
+        errorcode="$4"
         case $errorcode in
             1) #ERROR The application is not configured
               ;;
@@ -42,5 +44,13 @@ case $reason in
             4) #ERROR A snapshot for 'now' already exist
               ;;
         esac
+        ;;
+    5) #backintime-qt4 (GUI) started
+        ;;
+    6) #backintime-qt4 (GUI) closed
+        ;;
+    7) #Mount drives
+        ;;
+    8) #Unmount the drives
         ;;
 esac
