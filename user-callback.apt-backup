@@ -30,8 +30,8 @@ case $reason in
     1) #on process begin
        mkdir -p $DST
        dpkg --get-selections > $DST/package.list
-       apt-mark showauto > $DST/pgk_auto.list
-       apt-mark showmanual > $DST/pgk_manual.list
+       apt-mark showauto > $DST/pkg_auto.list
+       apt-mark showmanual > $DST/pkg_manual.list
        rm -f $DST/sources.list.d/*
        cp -aR /etc/apt/sources.list* $DST/
        apt-key exportall > $DST/repo.keys
