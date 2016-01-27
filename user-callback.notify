@@ -6,28 +6,31 @@
 
 # Copyright (c) 2014 Fabrizio Marana
 
-# This program is free software: you can redistribute it and/or modify it under 
-# the terms of the GNU General Public License as published by the Free Software 
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
 # Foundation, either version 3 of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful, but WITHOUT 
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
-# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
-# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
-# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
-# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # See the GNU General Public License for more details.
-# You DID NOT receive a copy of the GNU General Public License along with this 
+# You DID NOT receive a copy of the GNU General Public License along with this
 # program as the license is bigger then this program.
 # Therefore, see http://www.gnu.org/licenses/ for more details.
 
 # Note:
 #   To allow the notify-send "expire-time" parameter to work,
 #     follow http://www.webupd8.org/2014/04/configurable-notification-bubbles-for.html
-#   To allow mail to be sent, the "mailutils" package must be installed and configured:
+#   To allow mail to be sent, the "mailutils" package must be installed and
+#   configured and there must be a MTA (Mail Transport Agent) e.g. "postfix"
+#   or "exim4" installed and configured:
 #     sudo apt-get install mailutils
+#     sudo apt-get install postfix
 #     https://www.google.com/search?q=linux+configure+mailutils
 
-# Version 0.2 DD 2014/11/08 Change as much fixed text to variables to allow 
+# Version 0.2 DD 2014/11/08 Change as much fixed text to variables to allow
 #                           others to modify more easily
 #                           Polish code to make it more readable
 # TO DO:  Use rsync instead of cpio
@@ -49,20 +52,20 @@ declare szBackInTimeSnapshotName="$5"
 case $iBackInTimeStatus in
   1)  ## Backup Starting ##
       # Here you should put commands that you need JUST before the backup begins, E.g.:
-        # stop daemons/services, ... 
+        # stop daemons/services, ...
       notify-send --urgency=LOW --icon=face-plain "BackInTime" \
         "Starting backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}'..."
   ;;
   2)  ## Backup Finished ##
       notify-send --urgency=NORMAL --icon=face-laugh "BackInTime" \
-        "Finished backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}' completely!" 
+        "Finished backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}' completely!"
       # Here you should put the commands that you need after the backup ends, E.g.:
       # (Probably the reverse of the 1) section)
-        # allow the user to try again later, ... 
+        # allow the user to try again later, ...
   ;;
   3)  ## Backup Finishing ##
       notify-send --urgency=NORMAL --icon=face-cool --expire-time=4000 "BackInTime" \
-        "Finishing backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}'\nfor snapshot '${iBackInTimeSnapshotID}:${szBackInTimeSnapshotName}'..." 
+        "Finishing backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}'\nfor snapshot '${iBackInTimeSnapshotID}:${szBackInTimeSnapshotName}'..."
       # Here you should put the commands that you need to do just before the backup finishes:
       #   Copying extra files,
       #   writing to logs, ...
@@ -71,22 +74,22 @@ case $iBackInTimeStatus in
     declare -r iBackInTimeError=$iBackInTimeSnapshotID
     declare szBackInTimeErrorMessage="BackInTime Error: "
     declare szBackInTimeExtendedErrorMessage=""
-    # We're notifying the user on-screen and emailing the log file 
+    # We're notifying the user on-screen and emailing the log file
     # using the mailutils package regardless of the kind of error
     case $iBackInTimeError in
       1)  ## Application not configured ##
-          szBackInTimeErrorMessage=$szBackInTimeErrorMessage" Application not configured!" 
+          szBackInTimeErrorMessage=$szBackInTimeErrorMessage" Application not configured!"
           ;;
       2)  ## Application already Running ##
           szBackInTimeErrorMessage=$szBackInTimeErrorMessage" BackInTime is already running!"
-          szBackInTimeExtendedErrorMessage="\n\nPlease ensure you don't have an automatic backup and a manual backup both running at once." 
+          szBackInTimeExtendedErrorMessage="\n\nPlease ensure you don't have an automatic backup and a manual backup both running at once."
           ;;
       3)  ## No snapshot Directory ##
           szBackInTimeErrorMessage=$szBackInTimeErrorMessage" BackInTime can’t find the snapshots directory!"
-          szBackInTimeExtendedErrorMessage="\n\n(Is it on a removable drive which was detached/unmounted in error?)" 
+          szBackInTimeExtendedErrorMessage="\n\n(Is it on a removable drive which was detached/unmounted in error?)"
           ;;
       4)  ## Snapshot already exixsts ##
-          szBackInTimeErrorMessage=$szBackInTimeErrorMessage" A snapshot for 'now' already exists!" 
+          szBackInTimeErrorMessage=$szBackInTimeErrorMessage" A snapshot for 'now' already exists!"
           ;;
     esac # Error
     notify-send --urgency=CRITICAL --icon=face-angry "BackInTime Error" "$szBackInTimeErrorMessage$szBackInTimeExtendedErrorMessage"
