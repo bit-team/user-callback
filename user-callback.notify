@@ -96,7 +96,7 @@ case $iBackInTimeStatus in
     # only send mail if the e-mail address is not empty
     if [ -n "$szBackInTimeEMailAddress" ] &&  \
        [ "x$(which mail)" != "x" ] && \
-       [ -x $(which mail) ] then
+       [ -x $(which mail) ]; then
       mail --subject="$szBackInTimeErrorMessage$(date +%Y-%m-%d)" --to "$szBackInTimeEMailAddress"<~/.local/share/backintime/takesnapshot_.log
     fi
   ;;
