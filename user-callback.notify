@@ -59,6 +59,8 @@ case $iBackInTimeStatus in
   2)  ## Backup Finished ##
       notify-send --urgency=NORMAL --icon=face-laugh "BackInTime" \
         "Finished backup '${iBackInTimeProfileID}:${szBackInTimeProfileName}' completely!"
+      # Optional notification via zenity (uncomment to enable):
+      # zenity --info --title="BackInTime" --text "BackInTime backup for profile ${iBackInTimeProfileID} (${szBackInTimeProfileName}) completed" &
       # Here you should put the commands that you need after the backup ends, E.g.:
       # (Probably the reverse of the 1) section)
         # allow the user to try again later, ...
@@ -97,8 +99,10 @@ case $iBackInTimeStatus in
     if [ -n "$szBackInTimeEMailAddress" ] &&  \
        [ "x$(which mail)" != "x" ] && \
        [ -x $(which mail) ]; then
-      mail --subject="$szBackInTimeErrorMessage$(date +%Y-%m-%d)" --to "$szBackInTimeEMailAddress"<~/.local/share/backintime/takesnapshot_.log
+      cat ~/.local/share/backintime/takesnapshot_.log | mail -s "BackInTime backup for profile ${iBackInTimeProfileID} (${szBackInTimeProfileName}) failed on $(date +%Y-%m-%d_%H-%M-%S) with error $szBackInTimeErrorMessage" $szBackInTimeEMailAddress
     fi
+    # Optional notification via zenity (uncomment to enable):
+    # zenity --error --title="BackInTime" --text="BackInTime backup for profile ${iBackInTimeProfileID} (${szBackInTimeProfileName}) failed on $(date +%Y-%m-%d_%H-%M-%S) with error $szBackInTimeErrorMessagee" &
   ;;
   5)  ## backintime-qt4 (GUI) started ##
       #  Here you can put things that need to be done when launching the GUI
