@@ -28,7 +28,7 @@ errorcode="$4"
 function send_mail {
     subject="Backintime $profile_name: $1"
     shift
-    echo -e "$(date) \n$@" #| mail -s $subject $email
+    echo -e "$(date) \n$@" | mail -s "$subject" $email
 }
 
 function log_id {
