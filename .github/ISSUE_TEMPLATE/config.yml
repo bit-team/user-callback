@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Issues
+    url: https://github.com/bit-team/backintime/issues/new
+    about: This redirects you to the Issue section of the main repository "backintime".
