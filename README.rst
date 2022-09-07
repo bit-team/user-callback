@@ -1,7 +1,11 @@
+Introduction
+============
+For further information, see the `backintme <https://github.com/bit-team/backintime>`_ repository and its `issue tracker <https://github.com/bit-team/backintime/issues>`_.
+
 user-callback
 =============
 
-During backup process Back In Time can call a user-callback script at different steps.
+During the backup process, `Back In Time <https://github.com/bit-team/backintime>`_ can call a user-callback script at different steps.
 This callback is ``$XDG_CONFIG_HOME/backintime/user-callback`` 
 (by default ``$XDG_CONFIG_HOME`` is ``~/.config``).
 
