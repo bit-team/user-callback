@@ -80,7 +80,7 @@ case $reason in
         # mountPoint="/media/<user>/<mount root folder>"   # insert your mount folder here
         # printLog "Mount point status: $(mount | grep '$mountPoint')"  # empty if not mounted!
         
-        # Check if a folder does exists and is readable (eg. the snapshot target folder)
+        # Check if a required path does exist and is readable (eg. the snapshot target folder)
         # testFolder="/path/to/snapshots"                  # insert your path to check here
         # if [[ -r $testFolder ]]; then
         #     printLog "Folder exists and can be read..."
