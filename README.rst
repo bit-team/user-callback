@@ -1,6 +1,6 @@
 Introduction
 ============
-For further information, see the `backintme <https://github.com/bit-team/backintime>`_ repository and its `issue tracker <https://github.com/bit-team/backintime/issues>`_.
+For further information, see the `backintime <https://github.com/bit-team/backintime>`_ repository and its `issue tracker <https://github.com/bit-team/backintime/issues>`_.
 
 user-callback
 =============
