@@ -44,7 +44,7 @@ case $reason in
     3) #A new snapshot was taken
         snapshot_id="$4"
         snapshot_name="$5"
-        printLog "3 - backup process begins (snapshot_id=$snapshot_id - snapshot_name=$snapshot_name)"
+        printLog "3 - snapshot taken (snapshot_id=$snapshot_id - snapshot_name=$snapshot_name)"
         ;;
     4) #There was an error
         errorcode="$4"
