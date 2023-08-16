@@ -48,6 +48,7 @@ case $reason in
         ;;
     4) #There was an error
         errorcode="$4"
+        msg="$5"
         case $errorcode in
             1) # ERROR: The application is not configured
                printLog "4 - ERROR $errorcode: The application is not configured"
@@ -61,10 +62,17 @@ case $reason in
             4) # ERROR: A snapshot for 'now' already exist
                printLog "4 - ERROR $errorcode: A snapshot for 'now' already exist"
                ;;
+            5) # ERROR: Error while taking a snapshot
+               printLog "4 - ERROR $errorcode: Error while taking a snapshot"
+               ;;
+            6) # ERROR: New snapshot taken but with errors
+               printLog "4 - ERROR $errorcode: New snapshot taken but with errors (may happen with 'continue on error')"
+               ;;
             *) # Unknown error number
                printLog "4 - ERROR $errorcode: Unknown error code!"
                ;;
         esac
+        printLog "    Error message: $msg"
         ;;
     5) #backintime-qt4 (GUI) started
         printLog "5 - backintime-qt GUI started"
@@ -80,7 +88,7 @@ case $reason in
         # mountPoint="/media/<user>/<mount root folder>"   # insert your mount folder here
         # printLog "Mount point status: $(mount | grep '$mountPoint')"  # empty if not mounted!
         
-        # Check if a required path does exist and is readable (eg. the snapshot target folder)
+        # Check if a folder does exists and is readable (eg. the snapshot target folder)
         # testFolder="/path/to/snapshots"                  # insert your path to check here
         # if [[ -r $testFolder ]]; then
         #     printLog "Folder exists and can be read..."
