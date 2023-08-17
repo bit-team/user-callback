@@ -56,6 +56,12 @@ case $reason in
                   ;;
             4) send_mail "ERROR" "A snapshot for 'now' already exist"
                   ;;
+            5) send_mail "ERROR" "Error while taking a snapshot"
+               ;;
+            6) send_mail "ERROR" "New snapshot taken but with errors"
+               ;;
+            *) send_mail "ERROR" "Unknown error number"
+               ;;
         esac
         ;;
 esac
