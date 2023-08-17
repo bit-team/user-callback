@@ -29,25 +29,31 @@ function ppid {
 }
 
 case $3 in
-    1) #Backup process begins
+    1) # Backup process begins
         if [ true ]; then ###INSERT YOUR CONDITIONS HERE
             kill $(ppid $(ppid $pid))
         fi
         ;;
-    2) #Backup process ends
+    2) # Backup process ends
         ;;
-    3) #A new snapshot was taken
+    3) # A new snapshot was taken
         ;;
     4) #There was an error
         case $4 in
-            1) #ERROR The application is not configured
+            1) # ERROR The application is not configured
               ;;
-            2) #ERROR A 'take snapshot' process is already running
+            2) # ERROR A 'take snapshot' process is already running
               ;;
-            3) #ERROR Can't find snapshots folder (is it on a removable drive ?)
+            3) # ERROR Can't find snapshots folder (is it on a removable drive ?)
               ;;
-            4) #ERROR A snapshot for 'now' already exist
+            4) # ERROR A snapshot for 'now' already exist
               ;;
+            5) # ERROR: Error while taking a snapshot
+               ;;
+            6) # ERROR: New snapshot taken but with errors
+               ;;
+            *) # Unknown error number
+               ;;
         esac
         ;;
 esac
