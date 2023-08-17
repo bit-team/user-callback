@@ -93,6 +93,16 @@ case $iBackInTimeStatus in
       4)  ## Snapshot already exixsts ##
           szBackInTimeErrorMessage=$szBackInTimeErrorMessage" A snapshot for 'now' already exists!"
           ;;
+      5) # ERROR: Error while taking a snapshot
+         szBackInTimeErrorMessage=$szBackInTimeErrorMessage" Error while taking a snapshot"
+         ;;
+      6) # ERROR: New snapshot taken but with errors
+         szBackInTimeErrorMessage=$szBackInTimeErrorMessage" New snapshot taken but with errors"
+         szBackInTimeExtendedErrorMessage="\n\nMay happen with 'continue on error'"
+         ;;
+      *) # Unknown error number
+         szBackInTimeErrorMessage=$szBackInTimeErrorMessage" Unknown error code!"
+         ;;
     esac # Error
     notify-send --urgency=CRITICAL --icon=face-angry "BackInTime Error" "$szBackInTimeErrorMessage$szBackInTimeExtendedErrorMessage"
     # only send mail if the e-mail address is not empty
