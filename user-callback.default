@@ -47,6 +47,8 @@ case $reason in
                ;;
             6) # ERROR: New snapshot taken but with errors
                ;;
+            *) # Unknown error number
+               ;;
         esac
         ;;
     5) #backintime-qt4 (GUI) started
