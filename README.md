@@ -18,16 +18,16 @@ This user-callback script is contained in the file ``$XDG_CONFIG_HOME/backintime
 3. A new snapshot was taken. The extra arguments are snapshot ID and snapshot path.
 4. There was an error. The fourth argument is the error code.
 
-  Possible error codes are:
+   Possible error codes are:
 
-  1. The application is not configured.
-  2. A "take snapshot" process is already running.
-  3. Can't find snapshots folder (is it on a removable drive ?).
-  4. A snapshot for "now" already exist.
-  5. Error while taking a snapshot (introduced Aug. 17, 2023)
-  6. New snapshot taken but with errors (introduced Aug. 17, 2023)
+   1. The application is not configured.
+   2. A "take snapshot" process is already running.
+   3. Can't find snapshots folder (is it on a removable drive ?).
+   4. A snapshot for "now" already exist.
+   5. Error while taking a snapshot (introduced Aug. 17, 2023)
+   6. New snapshot taken but with errors (introduced Aug. 17, 2023)
 
-  The optional fifth argument just for errors is the error message.
+   The optional fifth argument just for errors is the error message.
 
 5. On (graphical) App start.
 6. On (graphical) App close.
