@@ -1,3 +1,8 @@
+# Deprecated
+The content and functionality of this repository have been moved into the [bit-team/backintime](https://github.com/bit-team/backintime) repository. Please refer to the directory [`doc/user-callback-examples`](https://github.com/bit-team/backintime/tree/dev/doc/user-callback-examples) there. This repository will be removed in the near future.
+
+---
+
 Introduction
 ============
 For further information, see the `backintime <https://github.com/bit-team/backintime>`_ repository and its `issue tracker <https://github.com/bit-team/backintime/issues>`_.
